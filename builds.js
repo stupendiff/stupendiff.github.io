@@ -51,7 +51,6 @@ window.BUILDS = [
     name: 'Kundli Ghar Ghar Ki',
     line: 'A family personality reading built from birthdays, designed to spread through family WhatsApp groups. Built for a growth hackathon.',
     status: 'Live',
-    award: '3rd place / 70 teams · Growth Hackathon',
     stack: ['React', 'Vite', 'Vercel functions', 'Supabase', 'OpenRouter'],
     problem: 'The hackathon brief was **fresh leads for a June challenge**. A kundli reading is usually for one person. The bet: a reading about the whole family pulls each member in to add themselves, and every person who joins is a lead.',
     how: [
