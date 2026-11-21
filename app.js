@@ -43,7 +43,7 @@
     const status = b.status ? `<span class="tag tag-status${/live|in use|runs|public/i.test(b.status) ? ' live' : ''}">${esc(b.status)}</span>` : '';
     const left = [
       sec('The problem', `<p>${rich(b.problem)}</p>`),
-      b.how ? sec(b.cat === 'design' ? 'The approach' : 'How it works', `<ol class="steps">${b.how.map((s) => `<li>${rich(s)}</li>`).join('')}</ol>`) : '',
+      b.how ? sec(b.evolution ? 'The approach' : 'How it works', `<ol class="steps">${b.how.map((s) => `<li>${rich(s)}</li>`).join('')}</ol>`) : '',
       b.numbers ? sec('Numbers', `<div class="numbers">${b.numbers.map((n) => `<div class="num"><span class="n">${esc(n[0])}</span><span class="l">${esc(n[1])}</span></div>`).join('')}</div>`) : '',
       b.links ? `<div class="sec"><div class="links">${b.links.map((l) => `<a href="${esc(l[1])}" target="_blank" rel="noopener">${esc(l[0])} ↗</a>`).join('')}</div></div>` : '',
     ].join('');
@@ -77,33 +77,84 @@
       <div class="builds">${items.map(card).join('')}</div></section>`;
   }).join('');
 
-  document.getElementById('index').innerHTML = cats.map((c, i) => {
-    const items = builds.filter((b) => b.cat === c.id);
-    return `<a class="idx" href="#${c.id}"><span class="idx-n">0${i + 1}</span>
-      <span class="idx-name">${esc(c.name)}</span><span class="idx-count">${items.length}</span>
-      <span class="idx-list">${items.map((b) => esc(b.name.split(' — ')[0])).join(' · ')}</span></a>`;
-  }).join('');
-  document.querySelector('.bar-links').innerHTML = cats.map((c) => `<a href="#${c.id}">${esc(c.name)}</a>`).join('');
+  // Tabs are filters: one category shows at a time, its blurb sits under the tabs.
+  const tabs = document.querySelector('.bar-links');
+  tabs.innerHTML = cats.map((c) => `<a href="#${c.id}" role="tab" data-cat="${c.id}">${esc(c.name)}</a>`).join('');
+  const links = [...tabs.querySelectorAll('a')];
+  const sections = [...root.querySelectorAll('.cat')];
+  const barEl = document.getElementById('bar');
+  const heroEl = document.querySelector('.hero');
+  const blurb = document.getElementById('bar-blurb');
 
-  const toggle = document.getElementById('toggle-all');
-  toggle.addEventListener('click', () => {
-    const open = toggle.textContent === 'Expand all';
-    root.querySelectorAll('.build').forEach((el) => { el.open = open; });
-    toggle.textContent = open ? 'Collapse all' : 'Expand all';
-  });
-
-  // Deep link: /#jagriti opens that card; /#internal scrolls to the section.
-  const target = location.hash && document.getElementById(decodeURIComponent(location.hash.slice(1)));
-  if (target) { if (target.tagName === 'DETAILS') target.open = true; target.scrollIntoView({ block: 'start' }); }
-
-  // Highlight the section in view in the sticky bar.
-  const links = [...document.querySelectorAll('.bar-links a')];
-  if ('IntersectionObserver' in window) {
-    const io = new IntersectionObserver((entries) => entries.forEach((e) => {
-      if (e.isIntersecting) links.forEach((a) => a.classList.toggle('on', a.getAttribute('href') === '#' + e.target.id));
-    }), { rootMargin: '-45% 0px -50% 0px' });
-    document.querySelectorAll('.cat').forEach((s) => io.observe(s));
+  function select(id, { scroll = false } = {}) {
+    sections.forEach((s) => {
+      const show = s.id === id;
+      if (show && s.hidden) { s.classList.remove('fade-in'); void s.offsetWidth; s.classList.add('fade-in'); }
+      s.hidden = !show;
+    });
+    links.forEach((a) => {
+      const on = a.dataset.cat === id;
+      a.classList.toggle('on', on);
+      a.setAttribute('aria-selected', String(on));
+      // Phone: bring the selected tab to the centre of the row, under the fixed triangle.
+      if (on) centreTab(a);
+    });
+    placePointer();
+    blurb.textContent = (cats.find((c) => c.id === id) || {}).blurb || '';
+    // If the header has already scrolled away, glide to the top of the list, keeping the header hidden.
+    // If the header is still on screen, stay put.
+    const heroBottom = heroEl.offsetTop + heroEl.offsetHeight;
+    if (scroll && window.scrollY >= heroBottom) {
+      const top = root.getBoundingClientRect().top + window.scrollY - barEl.offsetHeight - 16;
+      window.scrollTo({ top: Math.max(top, heroBottom), behavior: 'smooth' });
+    }
   }
+  function centreTab(a) {
+    const r = a.getBoundingClientRect(), t = tabs.getBoundingClientRect();
+    const delta = r.left + r.width / 2 - (t.left + t.width / 2);
+    if (Math.abs(delta) > 1) tabs.scrollBy({ left: delta, behavior: 'smooth' });
+  }
+  // Phone: swiping the row selects whichever tab settles in the centre.
+  const phone = window.matchMedia('(max-width:700px)');
+  let settle;
+  tabs.addEventListener('scroll', () => {
+    if (!phone.matches) return;
+    clearTimeout(settle);
+    settle = setTimeout(() => {
+      const mid = tabs.getBoundingClientRect().left + tabs.clientWidth / 2;
+      const near = links.reduce((best, a) => {
+        const r = a.getBoundingClientRect(), d = Math.abs(r.left + r.width / 2 - mid);
+        return d < best.d ? { a, d } : best;
+      }, { a: null, d: Infinity }).a;
+      if (near && !near.classList.contains('on')) {
+        history.replaceState(null, '', '#' + near.dataset.cat);
+        select(near.dataset.cat, { scroll: true });
+      }
+    }, 140);
+  }, { passive: true });
+
+  // Small triangle under the active tab, pointing into the description strip.
+  const pointer = document.querySelector('.bar-pointer');
+  function placePointer() {
+    const on = tabs.querySelector('a.on'); if (!on) return;
+    const r = on.getBoundingClientRect(), box = pointer.parentElement.getBoundingClientRect();
+    pointer.style.left = (r.left + r.width / 2 - box.left) + 'px';
+  }
+  tabs.addEventListener('scroll', placePointer, { passive: true });
+  window.addEventListener('resize', placePointer);
+  document.fonts?.ready.then(placePointer);
+
+  links.forEach((a) => a.addEventListener('click', (e) => {
+    e.preventDefault();
+    history.replaceState(null, '', '#' + a.dataset.cat);
+    select(a.dataset.cat, { scroll: true });
+  }));
+
+  // Deep link: /#jagriti opens that card in its category; /#internal selects the tab. Default: first tab.
+  const target = location.hash && document.getElementById(decodeURIComponent(location.hash.slice(1)));
+  const startCat = target ? (target.classList.contains('cat') ? target.id : target.closest('.cat')?.id) : null;
+  select(startCat || cats[0].id);
+  if (target && target.tagName === 'DETAILS') { target.open = true; target.scrollIntoView({ block: 'start' }); }
 
   const lb = document.getElementById('lightbox');
   root.addEventListener('click', (e) => {
@@ -112,4 +163,21 @@
     lb.querySelector('.lb-cap').textContent = b.dataset.cap; lb.showModal();
   });
   lb.addEventListener('click', (e) => { if (e.target === lb || e.target.closest('.lb-close')) lb.close(); });
+})();
+
+// Reach out: one dialog, opened from the hero button or the sticky button.
+(() => {
+  const dlg = document.getElementById('reach');
+  const fab = document.querySelector('.reach-fab');
+  document.querySelectorAll('[data-reach]').forEach((b) => b.addEventListener('click', () => dlg.showModal()));
+  dlg.querySelector('.reach-x').addEventListener('click', () => dlg.close());
+  dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
+  dlg.querySelectorAll('[data-copy]').forEach((b) => b.addEventListener('click', async () => {
+    try { await navigator.clipboard.writeText(b.dataset.copy); b.textContent = 'Copied'; }
+    catch { b.textContent = 'Copy failed'; }
+    setTimeout(() => { b.textContent = 'Copy'; }, 1600);
+  }));
+  // Desktop: the sticky button appears once the hero has scrolled away.
+  const hero = document.querySelector('.hero');
+  new IntersectionObserver(([e]) => fab.classList.toggle('show', !e.isIntersecting)).observe(hero);
 })();

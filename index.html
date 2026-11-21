@@ -7,44 +7,64 @@
 <meta name="description" content="Things I've built at Habuild and on my own: the problem, how it works, the architecture and the decisions behind each.">
 <meta property="og:title" content="Saurabh Shah — Work Portfolio">
 <meta property="og:description" content="Builds at Habuild and on my own: problem, how it works, architecture, decisions.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23A85D0A'/%3E%3Ctext x='16' y='22' font-family='Arial' font-weight='800' font-size='15' fill='white' text-anchor='middle'%3ESS%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23008DA8'/%3E%3Ctext x='16' y='22' font-family='Arial' font-weight='800' font-size='15' fill='white' text-anchor='middle'%3ESS%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Montserrat:ital,wght@0,300..700;1,300..700&display=swap">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="page">
-
-  <header class="top">
-    <div>
-      <p class="kicker">Work portfolio</p>
-      <h1 class="name">Saurabh Shah</h1>
-      <p class="lede">Product manager who builds. These are the tools, prototypes and systems I've made at
-        <strong>Habuild</strong> and on my own. Each card covers what it solves, how it works, how it's put
-        together and why I built it that way.</p>
+<header class="hero">
+  <span class="hero-mark" aria-hidden="true">SAURABH SHAH</span>
+  <div class="hero-in">
+    <img class="hero-av" src="assets/avatar.png" alt="Cartoon of Saurabh waving hello" width="383" height="418">
+    <div class="hero-txt">
+      <h1 class="hero-hi"><span class="hero-lead">Hi, I am</span> <span class="hero-name">Saurabh Shah</span></h1>
+      <p class="hero-roles"><span>Product Builder</span><span>Problem Solver</span><span>Perpetually Curious</span></p>
     </div>
-    <nav class="contact" aria-label="Contact">
-      <a href="mailto:saurabhshah1512@gmail.com">saurabhshah1512@gmail.com</a>
-      <a href="#" data-link="linkedin">LinkedIn</a>
-      <a href="https://github.com/stupendiff">GitHub</a>
-    </nav>
-  </header>
-
-  <nav class="index" id="index" aria-label="Sections"></nav>
-
-  <div class="bar" id="bar">
-    <nav class="bar-links" aria-label="Jump to section"></nav>
-    <button class="linkish" id="toggle-all" type="button">Expand all</button>
   </div>
+  <button class="hero-cta" type="button" data-reach>Get in touch</button>
+</header>
+
+<div class="bar" id="bar">
+  <div class="bar-tabs">
+    <nav class="bar-links" role="tablist" aria-label="Filter work by category"></nav>
+    <span class="bar-pointer" aria-hidden="true"></span>
+  </div>
+  <p class="bar-blurb" id="bar-blurb" aria-live="polite"></p>
+</div>
+
+
+<div class="page">
 
   <main id="builds"></main>
 
   <footer class="foot">
     <p>Screenshots of internal tools use placeholder names, and member data is never shown.
-      Hand-built static site on GitHub Pages.</p>
+      Hand-built static site on GitHub Pages · <a href="https://github.com/stupendiff">GitHub</a></p>
   </footer>
 </div>
+
+<button class="reach-fab" type="button" data-reach aria-haspopup="dialog"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18v12H3z"/><path d="m3 7 9 6 9-6"/></svg><span>Get in touch</span></button>
+
+<dialog id="reach" aria-labelledby="reach-h">
+  <div class="reach-card">
+    <div class="reach-head">
+      <h2 id="reach-h">Say hi</h2>
+      <button class="reach-x" type="button" aria-label="Close">×</button>
+    </div>
+    <p class="reach-sub">Happy to talk about product, building, or anything on this page.</p>
+    <ul class="reach-list">
+      <li><a href="mailto:saurabhshah1512@gmail.com"><span class="reach-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18v12H3z"/><path d="m3 7 9 6 9-6"/></svg></span><span><b>Email</b>saurabhshah1512@gmail.com</span></a>
+        <button class="reach-copy" type="button" data-copy="saurabhshah1512@gmail.com">Copy</button></li>
+      <li><a href="tel:+918960676918"><span class="reach-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 5a2 2 0 0 1 2-2"/></svg></span><span><b>Phone</b>+91 89606 76918</span></a>
+        <a class="reach-copy" href="https://wa.me/918960676918" target="_blank" rel="noopener">WhatsApp</a></li>
+      <li><a href="https://www.linkedin.com/in/saurabhshah1512" target="_blank" rel="noopener"><span class="reach-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 10v7M8 7v.01M12 17v-4a2 2 0 0 1 4 0v4M12 10v7"/></svg></span><span><b>LinkedIn</b>in/saurabhshah1512</span></a></li>
+      <li><a href="assets/Saurabh-Shah-Resume.pdf" target="_blank" rel="noopener"><span class="reach-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H6v18h12V7z"/><path d="M14 3v4h4M9 13h6M9 17h6"/></svg></span><span><b>Resume</b>One-page PDF</span></a>
+        <a class="reach-copy" href="assets/Saurabh-Shah-Resume.pdf" download="Saurabh-Shah-Resume.pdf">Download</a></li>
+    </ul>
+  </div>
+</dialog>
 
 <dialog id="lightbox" aria-label="Image viewer">
   <button class="lb-close" type="button" aria-label="Close">×</button>

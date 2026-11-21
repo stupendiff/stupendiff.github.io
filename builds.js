@@ -3,18 +3,16 @@
 // Design case studies can add `evolution: [{ title, note, src }]` for the before→after strip.
 
 window.CATEGORIES = [
-  { id: 'user-facing', name: 'User-facing', blurb: 'Products members and customers touch directly.' },
-  { id: 'internal', name: 'Internal tools', blurb: 'Tools the team uses to see, write and send.' },
-  { id: 'process', name: 'Process improvements', blurb: 'Systems that change how product work gets done.' },
-  { id: 'personal', name: 'Personal use', blurb: 'Things I built for my own life and desk.' },
-  { id: 'design', name: 'Design case studies', blurb: 'What we were solving and how the design evolved.' },
+  { id: 'product', name: 'Product Problems', blurb: "Problems I solved for the organizations I've worked with, from a product lens." },
+  { id: 'process', name: 'Processes', blurb: 'Workflows and systems built so teams are enabled to focus on their core job.' },
+  { id: 'play', name: 'Productivity & Play', blurb: "Things I built for the fun of it, because the idea won't leave me alone." },
 ];
 
 window.BUILDS = [
 
   /* ───────────────────────── User-facing ───────────────────────── */
   {
-    id: 'jagriti', cat: 'user-facing', where: 'habuild',
+    id: 'jagriti', cat: 'product', where: 'habuild',
     name: 'Jagriti',
     line: 'A session wake-up alarm that rings like a WhatsApp call. The prototype became real IVR wake-up experiments.',
     status: 'Prototype → shipped as IVR',
@@ -47,7 +45,7 @@ window.BUILDS = [
     ],
   },
   {
-    id: 'kundli', cat: 'user-facing', where: 'personal',
+    id: 'kundli', cat: 'product', where: 'personal',
     name: 'Kundli Ghar Ghar Ki',
     line: 'A family personality reading built from birthdays, designed to spread through family WhatsApp groups. Built for a growth hackathon.',
     status: 'Live',
@@ -82,7 +80,7 @@ window.BUILDS = [
     ],
   },
   {
-    id: 'my-circle', cat: 'user-facing', where: 'habuild',
+    id: 'my-circle', cat: 'product', where: 'habuild',
     name: 'My Circle & My Impact',
     line: 'Shows a member the people they brought in, whether those people attended today, and the whole tree of lives that joined because of them.',
     status: 'Built',
@@ -110,7 +108,7 @@ window.BUILDS = [
     shots: [{ src: 'assets/shots/mycircle-impact.png', cap: 'My Impact: 47 lives, four circles deep', phone: true }],
   },
   {
-    id: 'taste-dna', cat: 'user-facing', where: 'habuild',
+    id: 'taste-dna', cat: 'product', where: 'habuild',
     name: 'Taste DNA — Apna Swad Pehchano',
     line: 'A food-taste quiz played as dish-vs-dish battles. It scores you on six axes and shares like Wordle on WhatsApp.',
     status: 'Prototype',
@@ -144,7 +142,7 @@ window.BUILDS = [
 
   /* ───────────────────────── Internal tools ───────────────────────── */
   {
-    id: 'wa-journey', cat: 'internal', where: 'habuild',
+    id: 'wa-journey', cat: 'process', where: 'habuild',
     name: 'WhatsApp preview & journey map',
     line: 'Write a WhatsApp message, see it as a member does, share it by link. The journey view maps every paid send, slot by slot.',
     status: 'In use',
@@ -176,7 +174,7 @@ window.BUILDS = [
     ],
   },
   {
-    id: 'chat-explorer', cat: 'internal', where: 'habuild',
+    id: 'chat-explorer', cat: 'process', where: 'habuild',
     name: 'Chat Explorer',
     line: 'Search, filter and label 700K+ WhatsApp group messages. A second build covers sales-executive chats.',
     status: 'In use',
@@ -207,7 +205,7 @@ window.BUILDS = [
     visualNote: 'Screens hold member conversations, so they aren\'t shown here.',
   },
   {
-    id: 'notifications', cat: 'internal', where: 'habuild',
+    id: 'notifications', cat: 'product', where: 'habuild',
     name: 'Notification framework',
     line: 'Send app pushes to any list, with dry runs and scheduling, plus an audience builder that merges story viewers, earlier clickers and CSVs into one segment.',
     status: 'In use',
@@ -236,7 +234,7 @@ window.BUILDS = [
     },
   },
   {
-    id: 'community-listening', cat: 'internal', where: 'habuild',
+    id: 'community-listening', cat: 'process', where: 'habuild',
     name: 'Community listening',
     line: 'A daily digest of the Facebook community, top 3 posts to Slack, and a live-chat summariser that surfaces what members ask during sessions.',
     status: 'Runs daily',
@@ -264,7 +262,7 @@ window.BUILDS = [
     visualNote: 'Digests quote members by name, so they aren\'t shown here.',
   },
   {
-    id: 'workbench', cat: 'internal', where: 'habuild',
+    id: 'workbench', cat: 'process', where: 'habuild',
     name: 'PM Workbench',
     line: 'A visual front end over PMCI: capture, the day\'s board and chat with Claude in one window. MVP pilot.',
     status: 'MVP · parked',
@@ -479,7 +477,7 @@ window.BUILDS = [
 
   /* ───────────────────────── Personal use ───────────────────────── */
   {
-    id: 'desk-buddies', cat: 'personal', where: 'personal',
+    id: 'desk-buddies', cat: 'play', where: 'personal',
     name: 'Desk Buddies',
     line: 'Mac companions installed through Claude Code: an avocado that walks in to read out your to-dos, and a glass that tracks your water.',
     status: 'Public',
@@ -514,7 +512,7 @@ window.BUILDS = [
     ],
   },
   {
-    id: 'kaamchore', cat: 'personal', where: 'personal',
+    id: 'kaamchore', cat: 'play', where: 'personal',
     name: 'Kaamchore',
     line: 'A shared chore app for two that shows the real split, not a leaderboard. A PWA on Supabase.',
     status: 'In use',
@@ -542,7 +540,7 @@ window.BUILDS = [
     shots: [{ src: 'assets/shots/kaamchore-login.png', cap: 'The fairness meter for your home', phone: true }],
   },
   {
-    id: 'chal-paka-mat', cat: 'personal', where: 'personal',
+    id: 'chal-paka-mat', cat: 'play', where: 'personal',
     name: 'Chal Paka Mat',
     line: 'Couples\' meal planning built for the 7 pm "what do we eat" moment, not for your best self.',
     status: 'Phase 1 built',
@@ -568,7 +566,7 @@ window.BUILDS = [
     },
   },
   {
-    id: 'foolproof', cat: 'personal', where: 'personal',
+    id: 'foolproof', cat: 'play', where: 'personal',
     name: 'Foolproof',
     line: 'A menu-bar journal for two. Write blind all week; the reveal opens at the weekend.',
     status: 'Built',
@@ -596,7 +594,7 @@ window.BUILDS = [
     },
   },
   {
-    id: 'breathe', cat: 'personal', where: 'personal',
+    id: 'breathe', cat: 'play', where: 'personal',
     name: 'breathe',
     line: 'Prompts five deep breaths in the real gaps between meetings, read from Google Calendar.',
     status: 'Runs daily',
