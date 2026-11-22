@@ -19,18 +19,6 @@
   --mono:Montserrat,system-ui,sans-serif;              /* labels and tags use Montserrat too */
   color-scheme:light;
 }
-@media (prefers-color-scheme:dark){
-  :root:not([data-theme="light"]){
-    --paper:#1C1F21;--surface:#24282B;--sunk:#2A2E31;--ink:#EBEBEB;--ink-soft:#D2D2D2;--muted:#A3A3A3;--rule:#383D40;
-    --accent:#FFBB57;--warm-edge:#8A6420;--warm-wash:#2E2718;--hot:#FE6D74;
-    --teal:#5CC3D6;--teal-wash:#15292E;--teal-edge:#1F5A66;color-scheme:dark;
-  }
-}
-:root[data-theme="dark"]{
-    --paper:#1C1F21;--surface:#24282B;--sunk:#2A2E31;--ink:#EBEBEB;--ink-soft:#D2D2D2;--muted:#A3A3A3;--rule:#383D40;
-    --accent:#FFBB57;--warm-edge:#8A6420;--warm-wash:#2E2718;--hot:#FE6D74;
-    --teal:#5CC3D6;--teal-wash:#15292E;--teal-edge:#1F5A66;color-scheme:dark;
-}
 
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
@@ -40,8 +28,8 @@ a{color:inherit}
 button{font:inherit;color:inherit}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
-.page{max-width:1040px;margin:0 auto;padding:28px 16px 64px}
-@media (min-width:700px){.page{padding:36px 28px 80px}}
+.page{max-width:1040px;margin:0 auto;padding:18px 16px 64px}
+@media (min-width:700px){.page{padding:24px 28px 80px}}
 
 /* ---------- hero: at most 16% of the screen height ---------- */
 /* DM Serif Display for the name; Montserrat at 0.7x of it for "Hi, I am" */
@@ -87,7 +75,7 @@ button{font:inherit;color:inherit}
 .bar-links a{font-family:var(--body);font-size:15px;font-weight:400;color:#fff;text-decoration:none;
   padding:7px 18px;border-radius:999px;white-space:nowrap;position:relative;transition:background .15s,color .15s}
 .bar-links a:hover{color:#FFBB57}
-.bar-blurb{margin:0;padding:9px 16px 10px;text-align:center;font-style:italic;font-size:14.5px;line-height:1.4}
+.bar-blurb{margin:0;padding:8px 16px 9px;text-align:center;font-style:italic;font-size:13.5px;line-height:1.4}
 .bar-pointer{position:absolute;bottom:0;left:0;width:0;height:0;border:8px solid transparent;border-top:0;
   transform:translateX(-50%);transition:left .25s ease}
 @media (max-width:700px){
@@ -115,7 +103,7 @@ button{font:inherit;color:inherit}
 html{scroll-padding-top:64px}
 
 /* ---------- sections ---------- */
-.cat{margin-top:44px}
+.cat{margin-top:0}
 .cat-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px;margin-bottom:14px}
 .cat-head h2{font-family:var(--display);font-weight:400;font-size:30px;letter-spacing:0;margin:0}
 .cat-head p{margin:0;color:var(--muted);font-size:14.5px}
@@ -273,3 +261,584 @@ dialog#reach::backdrop{background:rgba(20,24,26,.45)}
 }
 @keyframes sheet-up{from{transform:translateY(100%)}to{transform:none}}
 @media (prefers-reduced-motion:reduce){.reach-fab{transition:none}dialog#reach[open] .reach-card{animation:none}}
+
+/* ---------- cover cards (Product Problems): identity on the outside, story on the inside ---------- */
+:root{--st-night:#0B4C5A;--st-teal:#DDEFF3;--st-coral:#FFE2DF;--st-yellow:#FFEFD2;--st-orange:#FDE4CC;--st-lilac:#ECE9F7;--st-ink:#24282B}
+
+.builds{gap:18px}
+.build.has-cover{border-radius:14px}
+.build.has-cover{transition:border-color .15s,box-shadow .15s}
+.build.has-cover:hover,.build.has-cover[open]{border-color:#008DA8;box-shadow:0 0 0 1px #008DA8}
+.build>.cv{padding:0;display:flex;flex-direction:column;gap:0;cursor:pointer}
+.cv-text{position:relative;display:flex;flex-direction:column;gap:10px;padding:16px 18px 18px;min-width:0}
+.cv-stage{order:-1;position:relative;width:100%;aspect-ratio:16/10;overflow:hidden;container-type:inline-size;background:var(--st-teal)}
+/* desktop: two-column grid of phone-style cards (thumbnail on top). An open card spans both columns and
+   switches to the side-by-side row so its story has room. ?layout=rows brings back the one-per-row list. */
+@media (min-width:760px){
+  #product .builds{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;align-items:stretch}
+  #product .build.has-cover[open],#product .f-empty{grid-column:1 / -1}
+  .cv-text{padding:20px 22px 22px}
+  .build.has-cover[open]>.cv,[data-layout="rows"] .build>.cv{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.12fr)}
+  .build.has-cover[open] .cv-text,[data-layout="rows"] .cv-text{padding:28px 32px;justify-content:center;gap:12px}
+  .build.has-cover[open] .cv-stage,[data-layout="rows"] .cv-stage{order:0}
+  [data-layout="rows"] #product .builds{display:flex}
+}
+.tint-night{background:var(--st-night)}.tint-teal{background:var(--st-teal)}.tint-coral{background:var(--st-coral)}
+.tint-yellow{background:var(--st-yellow)}.tint-orange{background:var(--st-orange)}.tint-lilac{background:var(--st-lilac)}
+.tint-ink{background:var(--st-ink)}
+
+/* screens are placed by data: left/top/width as % of the stage, so the composition holds at every size */
+.cv-l{position:absolute;left:var(--l);top:var(--t);width:var(--w);height:auto;max-width:none;
+  transform:rotate(var(--r));border-radius:9% / 4.2%;box-shadow:0 10px 28px rgba(16,32,40,.22),0 2px 6px rgba(16,32,40,.12);
+  transition:transform .35s cubic-bezier(.2,.7,.2,1)}
+.cv-l.flat{border-radius:8px}
+.build:hover .cv-l{transform:translateY(-6px) rotate(var(--r))}
+.build:hover .cv-l+.cv-l{transform:translateY(-10px) rotate(var(--r))}
+
+
+/* My Circle: orbit rings echo the screen */
+.cv-orbits{position:absolute;left:31%;top:52%;width:0;height:0}
+.cv-orbits i{position:absolute;border:1.5px dashed rgba(247,132,0,.45);border-radius:50%;transform:translate(-50%,-50%)}
+.cv-orbits i:nth-child(1){width:12cqw;height:12cqw;border-style:solid;border-color:rgba(247,132,0,.55)}
+.cv-orbits i:nth-child(2){width:24cqw;height:24cqw}
+.cv-orbits i:nth-child(3){width:36cqw;height:36cqw;border-color:rgba(247,132,0,.28)}
+.cv-orbits::after{content:"";position:absolute;width:2.4cqw;height:2.4cqw;border-radius:50%;background:#F78400;transform:translate(-50%,-50%)}
+
+/* Notifications: illustrated push stack */
+.nt{position:absolute;left:13%;right:13%;top:15%;display:flex;flex-direction:column;gap:2.2cqw;font-size:clamp(9.5px,2.25cqw,13px)}
+.nt-card{display:flex;gap:.9em;align-items:center;background:#fff;color:#333;border-radius:1.1em;padding:.85em 1em;
+  box-shadow:0 8px 22px rgba(10,60,72,.14)}
+.nt-card:nth-child(2){margin:0 3%;opacity:.93}
+.nt-card:nth-child(3){margin:0 6%;opacity:.82}
+.nt-card b{display:block;font-weight:600;line-height:1.3}
+.nt-card small{display:block;color:#737373;font-size:.88em;margin-top:.15em}
+.nt-ic{flex:none;width:2.3em;height:2.3em;border-radius:.6em;background:linear-gradient(135deg,#008DA8,#0A7388)}
+.nt-chip{align-self:flex-end;margin-top:.4em;background:#FFBB57;color:#3d2a00;font-weight:600;border-radius:999px;padding:.5em .9em}
+@container (max-width:420px){.nt-card:nth-child(3){display:none}.nt{top:17%}}
+
+.cv-ph{position:absolute;inset:16px;border:1.5px dashed rgba(128,128,140,.45);border-radius:10px;display:grid;place-content:center;
+  text-align:center;font:600 14px/1.3 var(--body);color:#7a7590}
+.cv-ph small{display:block;font-weight:400;font-size:12px;margin-top:4px}
+.tint-ink .cv-ph{color:#A3A3A3}
+
+/* one tag, the company, in the thumbnail's top-right corner (first corner seen on phone, outer edge on desktop) */
+.cv-tag{position:absolute;z-index:5;bottom:12px;right:12px;font:600 10.5px/1 var(--body);letter-spacing:.06em;text-transform:uppercase;
+  background:#FFBB57;color:#4A3200;padding:6px 10px;border-radius:999px;white-space:nowrap;box-shadow:0 1px 4px rgba(0,0,0,.16)}
+@media (max-width:480px){.cv-tag{bottom:10px;right:10px;font-size:10px}}
+/* accordion toggle: dark circle, white chevron, top-right of the thumbnail */
+.cv-toggle{position:absolute;z-index:5;top:12px;right:12px;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;
+  background:rgba(20,28,32,.72);color:#fff;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);transition:transform .2s,background .15s}
+.cv-toggle svg{width:14px;height:14px}
+.build:hover .cv-toggle{background:#FFBB57;color:#4A3200}
+.build[open] .cv-toggle{transform:rotate(180deg);background:#FFBB57;color:#4A3200}
+.tag-techpix{color:#4B3F8A;background:#F1EEFB;border-color:#C9C0EE}
+.has-cover .b-title{font-size:24px;line-height:1.15;color:#0A7388}
+@media (min-width:760px){.has-cover .b-title{font-size:27px}}
+/* left side: one hook line (display) + one subtext, centred vertically; the name is kept for screen readers only */
+.cv-name{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.cv-hook{margin:0;font-family:var(--display);font-weight:400;color:#0A7388;font-size:23px;line-height:1.2}
+@media (min-width:760px){.cv-hook{font-size:26px}}
+.cv-out{margin:0;color:var(--ink);font-size:14px;line-height:1.55}
+@media (min-width:760px){.cv-out{font-size:15px}}
+.cv-more{display:inline-flex;align-items:center;gap:8px;margin-top:4px;font:600 13px/1 var(--body);color:var(--accent)}
+.cv-more .chev{width:24px;height:24px}
+.build>.cv:hover .b-title{color:inherit}
+.build>.cv:hover .cv-more-t{text-decoration:underline;text-underline-offset:3px}
+
+.build[hidden]{display:none}
+.build.fade-in{animation:cat-in .25s ease-out}
+.f-empty{margin:8px 0 0;color:var(--muted);font-size:14px}
+
+/* sentence filter inside the yellow strip */
+.f-line{font-style:normal}
+.f-n{font-weight:700}
+.pick{position:relative;display:inline-flex;align-items:center;gap:5px;margin:2px 1px;padding:3px 10px 3px 12px;border-radius:999px;
+  background:#fff;color:#0A7388;white-space:nowrap;cursor:pointer;line-height:1.2;transition:background .15s,color .15s}
+.pick-v{font-weight:600}
+.pick svg{width:9px;height:6px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.pick select{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;font-size:16px;appearance:none}
+.pick:hover{background:#0A7388;color:#fff}
+.pick:focus-within{outline:2px solid #0A7388;outline-offset:2px}
+@media (prefers-reduced-motion:reduce){.build.fade-in{animation:none}.cv-l{transition:none}}
+
+/* ---------- typesetting variants (review: ?type=a|b|c|d) ---------- */
+.cv-hook{text-wrap:balance}.cv-out{text-wrap:pretty}
+/* A · soft teal: calmer teal, looser leading, softer grey subtext */
+[data-type="a"] .cv-hook{color:#1E5F6C;font-size:25px;line-height:1.28;letter-spacing:-.005em}
+[data-type="a"] .cv-out{color:#6A6F72;font-size:15px;line-height:1.65;max-width:46ch}
+[data-type="a"] .cv-text{gap:12px}
+/* B · ink: near-black serif title, teal saved for interaction */
+[data-type="b"] .cv-hook{color:#262A2C;font-size:26px;line-height:1.22}
+[data-type="b"] .cv-out{color:#6E7376;font-size:15px;line-height:1.65;max-width:46ch}
+[data-type="b"] .cv-text{gap:12px}
+[data-type="b"] .build:hover .cv-hook{color:#0A7388}
+/* C · sans: Medium-like, Montserrat semibold title, quiet subtext */
+[data-type="c"] .cv-hook{font-family:var(--body);font-weight:600;color:#23343A;font-size:20px;line-height:1.38;letter-spacing:-.012em}
+[data-type="c"] .cv-out{color:#737373;font-size:14.5px;line-height:1.65;max-width:50ch}
+[data-type="c"] .cv-text{gap:10px}
+/* D · deep teal + warm grey, smaller subtext, more air */
+[data-type="d"] .cv-hook{color:#0F4C58;font-size:27px;line-height:1.2;letter-spacing:-.01em}
+[data-type="d"] .cv-out{color:#7A7570;font-size:14px;line-height:1.7;max-width:44ch}
+[data-type="d"] .cv-text{gap:14px;padding-left:32px;padding-right:32px}
+@media (max-width:759px){[data-type="a"] .cv-hook{font-size:22px}[data-type="b"] .cv-hook{font-size:23px}
+  [data-type="c"] .cv-hook{font-size:18px}[data-type="d"] .cv-hook{font-size:24px}[data-type="d"] .cv-text{padding:18px 20px 20px}}
+/* bigger cards: stretch the text column so it centres vertically; titles sized to stay within two lines */
+.build>.cv{align-items:stretch}
+@media (min-width:760px){.cv-hook,[data-type] .cv-hook{font-size:23px}[data-type="c"] .cv-hook{font-size:19px}}
+
+/* placeholder: name shown above "Cover coming" */
+.cv-ph b{display:block;font:400 22px/1.15 var(--display);margin-bottom:4px;color:inherit}
+.cv-meta,.cv-view{display:none}
+
+/* ---------- ?look=portfolio: borderless picture tiles, caption text, featured first piece ---------- */
+[data-look="portfolio"] #product .builds{gap:44px 28px}
+[data-look="portfolio"] .build.has-cover{background:none;border:0;border-radius:0;box-shadow:none;overflow:visible}
+[data-look="portfolio"] .build.has-cover:hover{box-shadow:none}
+[data-look="portfolio"] .cv-stage{aspect-ratio:4/3;border-radius:18px;transition:box-shadow .3s}
+[data-look="portfolio"] .build:hover .cv-stage{box-shadow:0 14px 34px rgba(10,60,72,.16)}
+[data-look="portfolio"] .build:hover .cv-l{transform:translateY(-8px) rotate(var(--r)) scale(1.02)}
+[data-look="portfolio"] .cv-text{padding:16px 4px 0;gap:6px;justify-content:flex-start}
+[data-look="portfolio"] .cv-meta{display:block;font:600 11px/1.3 var(--body);letter-spacing:.12em;text-transform:uppercase;color:#8A8F92}
+[data-look="portfolio"] .cv-hook{font-size:21px;line-height:1.25}
+[data-look="portfolio"] .cv-tag{display:none}
+/* hover reveals the subtext on desktop; space is reserved so the grid doesn't jump. Touch screens always show it. */
+@media (hover:hover) and (min-width:760px){
+  [data-look="portfolio"] .cv-out{opacity:0;transform:translateY(-4px);transition:opacity .25s,transform .25s}
+  [data-look="portfolio"] .build:hover .cv-out,[data-look="portfolio"] .build:focus-within .cv-out,[data-look="portfolio"] .build[open] .cv-out{opacity:1;transform:none}
+}
+/* "View project" pill instead of the round toggle; the toggle returns to close an open card */
+[data-look="portfolio"] .cv-view{display:inline-flex;position:absolute;z-index:6;left:14px;bottom:14px;background:#fff;color:#0A7388;
+  font:600 13px/1 var(--body);padding:9px 14px;border-radius:999px;box-shadow:0 4px 14px rgba(0,0,0,.14);
+  opacity:0;transform:translateY(6px);transition:opacity .2s,transform .2s}
+[data-look="portfolio"] .build:hover .cv-view{opacity:1;transform:none}
+[data-look="portfolio"] .cv-toggle{display:none}
+[data-look="portfolio"] .build[open] .cv-toggle{display:grid}
+[data-look="portfolio"] .build[open] .cv-view{display:none}
+@media (hover:none){[data-look="portfolio"] .cv-view{opacity:1;transform:none;font-size:12px;padding:8px 12px}}
+/* empty covers: a solid panel with the project name in display type */
+[data-look="portfolio"] .cv-ph{inset:0;border:0;border-radius:0;font:500 12px/1.3 var(--body);letter-spacing:.08em;text-transform:uppercase;color:rgba(40,50,55,.55)}
+[data-look="portfolio"] .cv-ph b{font-size:clamp(26px,5.5cqw,46px);letter-spacing:0;text-transform:none;color:#2B3A3F;margin-bottom:8px;padding:0 10%}
+[data-look="portfolio"] .tint-night .cv-ph,[data-look="portfolio"] .tint-ink .cv-ph{color:rgba(255,255,255,.55)}
+[data-look="portfolio"] .tint-night .cv-ph b,[data-look="portfolio"] .tint-ink .cv-ph b{color:#fff}
+/* featured: the first visible piece runs full width with its caption beside it */
+@media (min-width:760px){
+  [data-look="portfolio"] #product .build.is-feat{grid-column:1 / -1}
+  [data-look="portfolio"] #product .build.is-feat>.cv{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:32px;align-items:center}
+  [data-look="portfolio"] #product .build.is-feat .cv-stage{order:0;aspect-ratio:16/10}
+  [data-look="portfolio"] #product .build.is-feat .cv-text{order:1;padding:0}
+  [data-look="portfolio"] #product .build.is-feat .cv-hook{font-size:28px}
+  [data-look="portfolio"] #product .build.is-feat .cv-out{opacity:1;transform:none;font-size:15.5px}
+  /* an open card gets its container back so the story has a surface */
+  [data-look="portfolio"] .build.has-cover[open]{background:var(--surface);border:1px solid #008DA8;border-radius:18px;overflow:hidden}
+  [data-look="portfolio"] .build.has-cover[open] .cv-stage{border-radius:0}
+  [data-look="portfolio"] .build.has-cover[open] .cv-text{padding:28px 32px}
+}
+
+/* ---------- portfolio caption: short serif title + two sans lines contrasting by weight and colour ---------- */
+.cv-title{display:none}
+[data-look="portfolio"] .cv-meta{font-size:10.5px;color:#9A9FA2}
+[data-look="portfolio"] .cv-title{display:block;margin:0;font:400 26px/1.1 var(--display);color:#1F2A2E;letter-spacing:.005em}
+[data-look="portfolio"] .cv-hook,[data-look="portfolio"][data-type] .cv-hook{font-family:var(--body);font-weight:500;font-size:15.5px;line-height:1.45;color:#0A7388;letter-spacing:0}
+[data-look="portfolio"] .cv-out{font-size:14px;line-height:1.6;color:#6E7376}
+[data-look="portfolio"] .cv-text{gap:7px}
+@media (min-width:760px){
+  [data-look="portfolio"] #product .build.is-feat .cv-title{font-size:34px}
+  [data-look="portfolio"] #product .build.is-feat .cv-hook{font-size:17px}
+  [data-look="portfolio"] #product .build.is-feat .cv-out{font-size:15px}
+}
+
+/* ---------- single column of cards (picture left, text right on desktop); popup on click ---------- */
+.build.has-cover{cursor:pointer}
+[data-look="portfolio"] #product .builds{display:flex;flex-direction:column;gap:56px}
+/* "View project" is now a real button under the text */
+[data-look="portfolio"] .cv-view{position:static;display:inline-flex;align-self:flex-start;margin-top:8px;opacity:1;transform:none;
+  border:1.5px solid #0A7388;background:transparent;color:#0A7388;box-shadow:none;cursor:pointer;font:600 13px/1 var(--body);padding:9px 14px;border-radius:999px}
+[data-look="portfolio"] .build:hover .cv-view{background:#0A7388;color:#fff}
+@media (hover:hover) and (min-width:760px){[data-look="portfolio"] .cv-out{opacity:1;transform:none}}
+[data-look="portfolio"] #product .build.is-feat .cv-title{font-size:32px}
+/* hover carousel over the cover */
+.cv-car{position:absolute;inset:0;z-index:4;background:inherit;opacity:0;transition:opacity .3s;pointer-events:none}
+.cv-car.on{opacity:1}
+.cv-car img{position:absolute;inset:8% 0;margin:auto;height:84%;width:auto;max-width:86%;object-fit:contain;border-radius:10px;
+  box-shadow:0 10px 28px rgba(16,32,40,.22);opacity:0;transition:opacity .45s}
+.cv-car img.on{opacity:1}
+
+/* popup: centred on desktop, bottom sheet on phone; scrolls inside; × closes */
+dialog#proj{border:0;padding:0;background:transparent;width:min(1080px,94vw);max-height:90vh;color:var(--ink)}
+dialog#proj::backdrop{background:rgba(16,24,28,.5)}
+.pm-card{position:relative;background:var(--surface);border-radius:20px;max-height:90vh;overflow-y:auto;overscroll-behavior:contain}
+.pm-x{position:sticky;top:12px;float:right;margin:12px 12px 0 0;z-index:3;width:38px;height:38px;border-radius:50%;border:0;
+  background:rgba(20,28,32,.75);color:#fff;font-size:22px;line-height:1;cursor:pointer}
+.pm-x:hover{background:#0A7388}
+.pm-in{padding:30px 34px 36px}
+.pm-head{max-width:720px;margin-bottom:24px}
+.pm-title{font:400 36px/1.1 var(--display);color:#1F2A2E;margin:6px 0 8px}
+.pm-hook{margin:0;font-weight:500;font-size:17px;line-height:1.5;color:#0A7388}
+.pm-body{display:grid;gap:30px}
+@media (min-width:820px){.pm-body{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px}}
+.pm-shots{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.pm-shots .shot:not(.phone){grid-column:1 / -1}
+.pm-ph{aspect-ratio:4/3;border-radius:14px;display:grid;place-items:center;font:600 13px var(--body);color:#7a8186}
+.pm-pics .diagram .flow{flex-direction:column}
+.pm-pics .diagram .lane-nodes{flex-direction:row;flex-wrap:wrap}
+.pm-pics .diagram .arrow{padding:8px 0}
+.pm-pics .diagram .arrow::before{content:"↓"}
+@media (max-width:600px){
+  dialog#proj{width:100%;max-width:100%;margin:auto 0 0;max-height:92vh}
+  .pm-card{border-radius:20px 20px 0 0;max-height:92vh}
+  .pm-in{padding:22px 18px calc(28px + env(safe-area-inset-bottom))}
+  .pm-title{font-size:28px}
+  dialog#proj[open] .pm-card{animation:sheet-up .25s ease-out}
+}
+
+/* ---------- ?look=bento (desktop only; phones fall back to the portfolio list) ---------- */
+.cv-full{display:none}
+@media (min-width:760px){
+  [data-look="bento"] #product .builds{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-rows:250px;
+    grid-auto-flow:dense;gap:16px}
+  [data-look="bento"] .build.has-cover{position:relative;border:0;border-radius:18px;overflow:hidden;background:none}
+  [data-look="bento"] [data-tile="W"]{grid-column:span 2}
+  [data-look="bento"] [data-tile="T"]{grid-row:span 2}
+  [data-look="bento"] [data-tile="L"]{grid-column:span 2;grid-row:span 2}
+  [data-look="bento"] .build>.cv{display:block;position:absolute;inset:0}
+  [data-look="bento"] .cv-stage{position:absolute;inset:0;aspect-ratio:auto;height:100%;transition:transform .5s cubic-bezier(.2,.7,.2,1)}
+  [data-look="bento"] .build:hover .cv-stage{transform:scale(1.03)}
+  /* tall tiles: one phone screen, big */
+  [data-look="bento"] [data-tile="T"] .cv-full{display:block;position:absolute;left:50%;top:7%;height:86%;width:auto;max-width:none;
+    transform:translateX(-50%) rotate(-2deg);border-radius:18px;box-shadow:0 14px 34px rgba(16,32,40,.25)}
+  [data-look="bento"] [data-tile="T"] .cv-l,[data-look="bento"] [data-tile="T"] .cv-orbits{display:none}
+  /* caption sits on the picture over a fade: title always, problem line on hover */
+  [data-look="bento"] .cv-text{position:absolute;z-index:6;left:0;right:0;bottom:0;padding:60px 20px 18px;gap:4px;
+    background:linear-gradient(to bottom,rgba(10,22,28,0),rgba(10,22,28,.78));pointer-events:none}
+  [data-look="bento"] .cv-meta{color:rgba(255,255,255,.75)}
+  [data-look="bento"] .cv-title,[data-look="bento"] #product .build.is-feat .cv-title{color:#fff;font-size:24px}
+  [data-look="bento"] [data-tile="L"] .cv-title{font-size:32px}
+  [data-look="bento"] .cv-hook,[data-look="bento"][data-type] .cv-hook{color:#fff;font-size:14px;font-weight:500;
+    max-height:0;opacity:0;overflow:hidden;transition:max-height .3s,opacity .3s}
+  [data-look="bento"] .build:hover .cv-hook{max-height:5em;opacity:1}
+  [data-look="bento"] .cv-out,[data-look="bento"] .cv-view,[data-look="bento"] .cv-tag{display:none}
+  [data-look="bento"] .cv-ph{inset:0;border:0;border-radius:0;padding-bottom:30%}
+  [data-look="bento"] .cv-ph b{font-size:30px}
+  [data-look="bento"] .cv-ph,[data-look="bento"] .cv-ph b{color:rgba(40,50,55,.5)}
+  [data-look="bento"] .tint-night .cv-ph,[data-look="bento"] .tint-ink .cv-ph,[data-look="bento"] .tint-night .cv-ph b,[data-look="bento"] .tint-ink .cv-ph b{color:rgba(255,255,255,.55)}
+  [data-look="bento"] .cv-car{z-index:5}
+  [data-look="bento"] .f-empty{display:none}
+}
+@media (min-width:760px){[data-look="bento"] .cv-meta,[data-look="bento"] .cv-title{display:block;margin:0}
+  [data-look="bento"] .cv-meta{font:600 10.5px/1.3 var(--body);letter-spacing:.12em;text-transform:uppercase}
+  [data-look="bento"] .cv-title{font-family:var(--display);font-weight:400;line-height:1.1}}
+@media (min-width:760px){[data-look="bento"] .cv-ph b{display:none}
+  [data-look="bento"] #product [data-tile="L"].build.is-feat .cv-title{font-size:34px}}
+
+/* bento v2: hand-composed board (sizes vary on purpose; order follows the composition, not the ranking) */
+@media (min-width:760px){
+  [data-look="bento"] #product .builds{grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-rows:124px;gap:14px;
+    grid-template-areas:
+      "a a j h"
+      "a a j h"
+      "a a j k"
+      "a a j k"
+      "s s j k"
+      "s s c k"
+      "s s c t"
+      "p p n t"
+      "p p n t"
+      "i i n t"
+      "i i n t"}
+  [data-look="bento"] #product #app-gtm{grid-area:a}            [data-look="bento"] #product #jagriti{grid-area:j}
+  [data-look="bento"] #product #headfone-acquisition{grid-area:h} [data-look="bento"] #product #kundli{grid-area:k}
+  [data-look="bento"] #product #venwiz-decks{grid-area:s}       [data-look="bento"] #product #headfone-retention{grid-area:c}
+  [data-look="bento"] #product #taste-dna{grid-area:t}          [data-look="bento"] #product #venwiz-product{grid-area:p}
+  [data-look="bento"] #product #nextup{grid-area:n}             [data-look="bento"] #product #ims-samay{grid-area:i}
+  [data-look="bento"] [data-tile="T"] .cv-full{top:46%;height:auto;width:78%;transform:translate(-50%,-50%) rotate(-2deg)}
+  [data-look="bento"] #kundli .cv-full{transform:translate(-50%,-50%) rotate(2deg)}
+  [data-look="bento"] [data-tile="S"] .cv-title{font-size:21px}
+}
+
+/* bento v3: landscape board, full width, 6 columns × 4 rows (refs: wide dashboards-style bento) */
+@media (min-width:760px){
+  [data-look="bento"] .page{max-width:1480px}
+  [data-look="bento"] #product .builds{grid-template-columns:repeat(6,minmax(0,1fr));grid-auto-rows:minmax(170px,13.5vw);gap:14px;
+    grid-template-areas:
+      "a a a j h k"
+      "a a a j t k"
+      "s s n i t p"
+      "s s n c c p"}
+  [data-look="bento"] #product .build{min-height:0}
+  [data-look="bento"] [data-tile="T"] .cv-full{width:74%}
+  [data-look="bento"] [data-tile="S"] .cv-title{font-size:19px}
+  [data-look="bento"] [data-tile="S"] .cv-text{padding:40px 16px 14px}
+}
+@media (min-width:760px) and (max-width:1100px){
+  [data-look="bento"] #product .builds{grid-auto-rows:150px}
+  [data-look="bento"] .cv-title,[data-look="bento"] #product .build.is-feat .cv-title{font-size:18px}
+}
+
+/* bento v4: proportional board, solid colour title band, textured backgrounds, hover subtext on the image */
+@media (min-width:760px){
+  /* the board keeps its shape at every width: 6 × 4 cells, container ratio fixed */
+  [data-look="bento"] #product .builds{grid-auto-rows:auto;grid-template-rows:repeat(4,minmax(0,1fr));aspect-ratio:5/3;gap:clamp(10px,1vw,16px)}
+  /* textured background from the project's own artwork */
+  [data-look="bento"] .cv-stage.has-bg::before{content:"";position:absolute;inset:-14px;background:var(--bg) center/cover no-repeat;filter:var(--bgf);z-index:0}
+  [data-look="bento"] .cv-full{z-index:1}
+  /* solid colour band for meta + title */
+  [data-look="bento"] .cv-text{background:var(--band,#0A7388);color:var(--band-ink,#fff);padding:clamp(10px,1vw,14px) clamp(12px,1.2vw,18px);gap:2px;pointer-events:none}
+  [data-look="bento"] .cv-meta{color:inherit;opacity:.78;font-size:clamp(9px,.7vw,10.5px)}
+  [data-look="bento"] .cv-title,[data-look="bento"] #product .build.is-feat .cv-title,[data-look="bento"] #product [data-tile="L"].build.is-feat .cv-title,[data-look="bento"] [data-tile="S"] .cv-title{color:inherit;font-size:clamp(15px,1.45vw,23px)}
+  [data-look="bento"] #product #app-gtm .cv-title,[data-look="bento"] #product #venwiz-decks .cv-title{font-size:clamp(18px,2vw,30px)}
+  /* hover: the picture darkens and the problem line appears on it (Montserrat) */
+  [data-look="bento"] .cv-stage::after{content:"";position:absolute;inset:0;z-index:4;background:rgba(8,18,22,.66);opacity:0;transition:opacity .25s}
+  [data-look="bento"] .build:hover .cv-stage::after{opacity:1}
+  [data-look="bento"] .cv-hook,[data-look="bento"][data-type] .cv-hook{position:absolute;left:0;right:0;bottom:100%;max-height:none;overflow:visible;
+    padding:0 clamp(12px,1.2vw,18px) clamp(12px,1.2vw,16px);font-family:var(--body);font-weight:500;font-size:clamp(12.5px,1vw,15px);line-height:1.45;
+    color:#fff;opacity:0;transform:translateY(6px);transition:opacity .25s,transform .25s}
+  [data-look="bento"] .build:hover .cv-hook{opacity:1;transform:none;max-height:none}
+  [data-look="bento"] .build:hover .cv-stage{transform:none}
+}
+/* band colours: primary teal / red / yellow family, neighbours never share a hue */
+#app-gtm{--band:#008DA8}  #jagriti{--band:#FFBB57;--band-ink:#3d2a00}  #headfone-acquisition{--band:#DD4D4D}
+#kundli{--band:#0A7388}   #taste-dna{--band:#F78400;--band-ink:#3d2a00} #venwiz-decks{--band:#DD4D4D}
+#nextup{--band:#FFBB57;--band-ink:#3d2a00} #ims-samay{--band:#008DA8} #headfone-retention{--band:#FE6D74;--band-ink:#3d1214}
+#venwiz-product{--band:#0A7388}
+
+/* bento v5: balanced board, text straight on the picture over a translucent colour fade (3 colours), one type size */
+.m-short{display:none}
+@media (min-width:760px){
+  [data-look="bento"] [data-tile="S"] .m-full{display:none}
+  [data-look="bento"] [data-tile="S"] .m-short{display:inline}
+  [data-look="bento"] #product .builds{grid-template-areas:
+      "a a a t j k"
+      "a a a t j k"
+      "n c c h s s"
+      "n i p p s s"}
+  [data-look="bento"] #product #headfone-retention{grid-area:c}
+  [data-look="bento"] .cv-text{color:var(--ink,#fff);padding:44px 14px 12px;gap:2px;
+    background:linear-gradient(to bottom,rgba(var(--c,10,115,136),0) 0,rgba(var(--c,10,115,136),.86) 58%)}
+  [data-look="bento"] .cv-meta{opacity:.85;font-size:10px}
+  [data-look="bento"] .cv-title,[data-look="bento"] #product .build .cv-title,[data-look="bento"] #product #app-gtm .cv-title,
+  [data-look="bento"] #product #venwiz-decks .cv-title,[data-look="bento"] [data-tile="S"] .cv-title{font-size:19px;line-height:1.15}
+  [data-look="bento"] .cv-hook,[data-look="bento"][data-type] .cv-hook{font-size:13px;padding:0 14px 12px}
+  [data-look="bento"] [data-tile="S"] .cv-text{padding:36px 14px 12px}
+}
+/* three fade colours (blue / red / yellow), no two neighbours alike */
+#app-gtm,#kundli,#headfone-acquisition,#ims-samay{--c:10,115,136;--ink:#fff}
+#taste-dna,#headfone-retention,#venwiz-decks{--c:221,77,77;--ink:#fff}
+#jagriti,#nextup,#venwiz-product{--c:255,187,87;--ink:#3d2a00}
+/* bento v5.1: one black fade for every tile; hover line sits at the top of the tile */
+@media (min-width:760px){
+  [data-look="bento"] #product .build{--c:12,16,18;--ink:#fff}
+  [data-look="bento"] .cv-text,[data-look="bento"] [data-tile="S"] .cv-text{top:0;padding:14px;justify-content:flex-end;
+    background:linear-gradient(to bottom,rgba(var(--c),0) 0,rgba(var(--c),0) 52%,rgba(var(--c),.82) 100%)}
+  [data-look="bento"] .cv-hook,[data-look="bento"][data-type] .cv-hook{position:absolute;top:14px;left:14px;right:14px;bottom:auto;padding:0}
+}
+/* bento v6: App Installs 2×2 top-left, Show Not Tell 3×2 bottom-right; the rest fills in rank order */
+@media (min-width:760px){
+  [data-look="bento"] #product .builds{grid-template-areas:
+      "a a j k t n"
+      "a a j k t n"
+      "p p i s s s"
+      "c c h s s s"}
+}
+/* bento v7: messier — the middle column staggers across the halves (small / tall / small), breaking the row line */
+@media (min-width:760px){
+  [data-look="bento"] #product .builds{grid-template-areas:
+      "a a h k c c"
+      "a a j k p p"
+      "t n j s s s"
+      "t n i s s s"}
+}
+/* one title size on every bento tile (an older clamp() rule was winning on most tiles) */
+@media (min-width:760px){[data-look="bento"] #product .build.has-cover.is-feat .cv-title{font-size:19px;line-height:1.15}}
+
+/* ---------- Processes: one card per row, FigJam board left / caption right; stacked on phone ---------- */
+#process .builds{display:flex;flex-direction:column;gap:48px;max-width:1120px;margin:0 auto}
+.build.proc{background:none;border:0;border-radius:0;overflow:visible;cursor:pointer}
+.pc{display:flex;flex-direction:column;gap:16px}
+.pc-pic{border-radius:18px;overflow:hidden;aspect-ratio:16/10;background:#F7F9FB;box-shadow:0 0 0 1px #E3E9EE;
+  transition:box-shadow .3s,transform .3s}
+.pc-pic .fj{display:block;width:100%;height:100%}
+.build.proc:hover .pc-pic{box-shadow:0 0 0 1px #E3E9EE,0 14px 34px rgba(10,60,72,.16);transform:translateY(-3px)}
+.fj-t{font:500 18px var(--body);fill:#2B3A3F;text-anchor:middle}
+.fj-lb{font:600 12px var(--body);letter-spacing:.12em;fill:#8A949A}
+.fj-ar{fill:none;stroke:#555;stroke-width:2;stroke-linejoin:round}
+.fj-note{font:600 27px Caveat,cursive;fill:#DD4D4D}
+.fj-na{fill:none;stroke:#DD4D4D;stroke-width:2;stroke-linecap:round}
+.fj-cur{font:600 12px var(--body);fill:#fff;text-anchor:middle}
+.pc-text{display:flex;flex-direction:column;gap:7px;padding:0 4px;min-width:0}
+.pc-meta{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;font:600 10.5px/1.3 var(--body);letter-spacing:.12em;text-transform:uppercase;color:#9A9FA2}
+.pc-status{padding:3px 8px;border-radius:999px;background:var(--teal-wash);color:#0A7388;letter-spacing:.06em}
+.pc-title{margin:0;font:400 26px/1.1 var(--display);color:#1F2A2E}
+.pc-hook{margin:0;font-weight:500;font-size:15.5px;line-height:1.45;color:#0A7388}
+.pc-out{margin:0;font-size:14px;line-height:1.6;color:#6E7376}
+.pc-view{align-self:flex-start;margin-top:8px;padding:9px 16px;border-radius:999px;border:1.5px solid #0A7388;background:#fff;
+  color:#0A7388;font:600 13px/1 var(--body);cursor:pointer;transition:background .15s,color .15s}
+.build.proc:hover .pc-view{background:#0A7388;color:#fff}
+@media (min-width:760px){
+  .pc{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:40px;align-items:center}
+  .pc-title{font-size:32px}
+  .pc-hook{font-size:17px}
+  .pc-out{font-size:15px}
+}
+@media (prefers-reduced-motion:reduce){.pc-pic{transition:none}.build.proc:hover .pc-pic{transform:none}}
+
+/* ---------- Productivity & Play: sticker wall (desktop bento), single column on phone ---------- */
+#play .builds{display:flex;flex-direction:column;gap:40px;max-width:1120px;margin:0 auto}
+.build.play-card{background:none;border:0;border-radius:0;overflow:visible;cursor:pointer}
+.pl{display:flex;flex-direction:column;gap:14px;height:100%}
+.pl-pic{position:relative;aspect-ratio:16/10;border-radius:16px;overflow:hidden;display:grid;place-items:center;background:#E3F2F5}
+.pl-pic.tint-yellow{background:#FFE7BF}.pl-pic.tint-teal{background:#D3ECF1}.pl-pic.tint-orange{background:#FFDDB8}
+.pl-pic.tint-night{background:#0E3E49}.pl-pic.tint-cream{background:#FBF3E2}
+.pl-img{max-height:88%;max-width:80%;width:auto;object-fit:contain;border-radius:12px;box-shadow:0 10px 26px rgba(16,32,40,.18);
+  transform:rotate(-2deg);transition:transform .35s}
+.pl-img.fill{max-width:86%;max-height:84%}
+.build.play-card:hover .pl-img{transform:rotate(0) scale(1.03)}
+.pl-text{display:flex;flex-direction:column;gap:6px;padding:0 4px}
+.pl-title{margin:0;font:400 26px/1.1 var(--display);color:#1F2A2E}
+.pl-hook{margin:0;font-weight:500;font-size:15.5px;line-height:1.45;color:#0A7388}
+.pl-out{margin:0;font-size:14px;line-height:1.6;color:#6E7376}
+/* drawn scenes */
+.art-tw{position:relative;width:78%;height:76%}
+.tw-paper{height:100%;background:#fff;border-radius:4px;box-shadow:0 12px 30px rgba(60,40,10,.14);padding:9% 10%;transform:rotate(-1.5deg);
+  font:500 clamp(13px,2.1vw,22px)/1.7 "Courier New",Courier,monospace;color:#2B2B2B;display:flex;flex-direction:column;justify-content:flex-end}
+.tw-paper p{margin:0}
+.tw-paper s{text-decoration-color:#DD4D4D;text-decoration-thickness:2px}
+.tw-caret{display:inline-block;width:.55em;height:1.1em;margin-left:2px;vertical-align:-.15em;background:#0A7388;animation:tw-blink 1.1s steps(1) infinite}
+@keyframes tw-blink{50%{opacity:0}}
+.tw-key{position:absolute;right:-4%;top:-6%;padding:8px 12px;border-radius:10px;background:#FFBB57;color:#3A2A00;font:700 15px var(--body);
+  box-shadow:0 4px 0 #D9932C;transform:rotate(6deg)}
+.art-jr{width:82%;display:flex;flex-direction:column;gap:14px;align-items:center}
+.jr-bar{align-self:stretch;display:flex;justify-content:flex-end;align-items:center;gap:8px;padding:6px 12px;border-radius:8px;
+  background:rgba(255,255,255,.12);color:#fff;font:600 12px var(--body)}
+.jr-dot{width:8px;height:8px;border-radius:50%;background:#FE6D74}
+.jr-week{display:flex;gap:6px}
+.jr-d{width:30px;height:30px;border-radius:8px;display:grid;place-items:center;font:700 12px var(--body)}
+.jr-d.off{background:rgba(255,255,255,.08);color:rgba(255,255,255,.35)}
+.jr-d.on{background:#FFBB57;color:#3A2A00}
+.jr-cap{margin:0;font:600 24px Caveat,cursive;color:#FFBB57}
+.art-ml{position:relative;width:84%}
+.ml-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.ml-grid span{background:#fff;border-radius:8px;padding:10px 6px;text-align:center;font:600 12px var(--body);color:#555}
+.ml-grid span.x{text-decoration:line-through;text-decoration-color:#DD4D4D;text-decoration-thickness:2px;color:#9A9FA2}
+.ml-note{position:absolute;right:-2%;bottom:-24%;padding:8px 12px;background:#FFF6A8;color:#5A4A00;font:600 20px/1.1 Caveat,cursive;
+  box-shadow:0 6px 14px rgba(60,40,10,.15);transform:rotate(3deg)}
+@media (min-width:760px){
+  #play .builds{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-rows:minmax(210px,auto);gap:22px;
+    grid-template-areas:"l l d k" "l l d k" "c c f b"}
+  #play [data-area="l"]{grid-area:l}#play [data-area="d"]{grid-area:d}#play [data-area="k"]{grid-area:k}
+  #play [data-area="c"]{grid-area:c}#play [data-area="f"]{grid-area:f}#play [data-area="b"]{grid-area:b}
+  /* filtered: let the visible stickers flow instead of holding their spots */
+  #play.filtered .builds{grid-template-areas:none;grid-auto-rows:auto}
+  #play.filtered .build{grid-area:auto}
+  .build.play-card{background:#fff;border-radius:18px;padding:10px 10px 16px;box-shadow:0 1px 0 #E3E9EE,0 6px 18px rgba(16,40,50,.07);
+    transition:transform .3s,box-shadow .3s}
+  #play .build:nth-child(odd){transform:rotate(-.6deg)}#play .build:nth-child(even){transform:rotate(.6deg)}
+  #play .build.play-card:hover{transform:rotate(0) translateY(-4px);box-shadow:0 1px 0 #E3E9EE,0 16px 34px rgba(16,40,50,.14)}
+  .pl-pic{flex:1;aspect-ratio:auto;min-height:150px;border-radius:12px}
+  .pl-text{padding:0 8px}
+  .pl-title{font-size:22px}
+  .pl-hook{font-size:14px}
+  .pl-out{display:none}
+  #play [data-area="l"] .pl-title{font-size:30px}
+  #play [data-area="l"] .pl-hook{font-size:16px}
+  #play [data-area="l"] .pl-out{display:block}
+}
+@media (prefers-reduced-motion:reduce){.tw-caret{animation:none}.build.play-card,.pl-img{transition:none}}
+/* play art fixes: fit narrow tiles, keep the note off the grid, key inside the frame */
+.jr-week{gap:4px;width:100%;justify-content:center}
+.jr-d{width:auto;flex:1 1 0;max-width:30px;height:auto;aspect-ratio:1}
+.art-ml{display:flex;flex-direction:column;align-items:flex-end;gap:10px}
+.ml-grid{align-self:stretch}
+.ml-note{position:static;margin-right:4%}
+.tw-key{top:2%;right:1%}
+@media (min-width:760px){#play.filtered [data-area="l"]{grid-column:span 2;grid-row:span 2}}
+.pl-img{height:86%;max-height:none;width:auto;max-width:80%}.pl-img.fill{height:82%;max-width:88%}
+.pl-img{position:absolute;inset:0;margin:auto}
+
+/* ---------- Product bento = Play card style (white card, picture on top, caption below), no tilt.
+   One caption size for every tile on both tabs: meta 10.5 · title 22 · problem line 14 (two lines max). ---------- */
+@media (min-width:760px){
+  body[data-look="bento"] main#builds #product .builds{aspect-ratio:auto;grid-template-rows:repeat(4,260px);grid-auto-rows:260px;gap:22px}
+  body[data-look="bento"] main#builds #product .build.has-cover{position:relative;display:flex;background:#fff;border:0;border-radius:18px;
+    padding:10px 10px 16px;overflow:hidden;box-shadow:0 1px 0 #E3E9EE,0 6px 18px rgba(16,40,50,.07);transition:transform .3s,box-shadow .3s}
+  body[data-look="bento"] main#builds #product .build.has-cover:hover{transform:translateY(-4px);box-shadow:0 1px 0 #E3E9EE,0 16px 34px rgba(16,40,50,.14)}
+  body[data-look="bento"] main#builds #product .build>.cv{position:static;inset:auto;display:flex;flex-direction:column;gap:12px;width:100%;height:100%}
+  body[data-look="bento"] main#builds #product .cv-stage{position:relative;inset:auto;flex:1;min-height:0;height:auto;aspect-ratio:auto;border-radius:12px;transform:none}
+  body[data-look="bento"] main#builds #product .cv-stage::after{display:none}
+  body[data-look="bento"] main#builds #product .cv-text{position:static;inset:auto;order:1;background:none;padding:0 8px;gap:6px;
+    justify-content:flex-start;pointer-events:auto;color:inherit}
+  body[data-look="bento"] main#builds #product .cv-hook{position:static;opacity:1;transform:none;max-height:none;padding:0}
+}
+/* the shared caption */
+.pl-text .pc-meta,
+body[data-look="bento"] main#builds #product .cv-meta{font:600 10.5px/1.3 var(--body);letter-spacing:.12em;text-transform:uppercase;color:#9A9FA2;opacity:1}
+@media (min-width:760px){
+  #play .pl-title,#play [data-area="l"] .pl-title,
+  body[data-look="bento"] main#builds #product .build .cv-title{margin:0;font:400 22px/1.15 var(--display);color:#1F2A2E}
+  #play .pl-hook,#play [data-area="l"] .pl-hook,
+  body[data-look="bento"] main#builds #product .build .cv-hook{margin:0;font:500 14px/1.45 var(--body);color:#0A7388;
+    display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  #play [data-area="l"] .pl-out{display:none}
+}
+/* Product board on Play's 4-column grid (same width as Play), still hand-placed:
+   App Installs + Show Not Tell big, tall phones, wide pairs; every cell filled */
+@media (min-width:760px){
+  body[data-look="bento"] main#builds #product .builds{max-width:1120px;margin:0 auto;grid-template-columns:repeat(4,minmax(0,1fr));
+    grid-template-rows:none;grid-auto-rows:230px;gap:22px;
+    grid-template-areas:"a a j k" "a a j k" "p p m m" "t n s s" "t n s s" "c c i i" "c c h h"}
+  body[data-look="bento"] main#builds #product #venwiz-mmt{grid-area:m}
+}
+/* Processes in the same card shell as Product and Play: white card, 10px frame round the board, light shadow, lift on hover */
+.build.proc{background:#fff;border-radius:18px;padding:10px 10px 18px;box-shadow:0 1px 0 #E3E9EE,0 6px 18px rgba(16,40,50,.07);
+  transition:transform .3s,box-shadow .3s}
+.build.proc:hover{transform:translateY(-4px);box-shadow:0 1px 0 #E3E9EE,0 16px 34px rgba(16,40,50,.14)}
+.build.proc .pc-pic{border-radius:12px;box-shadow:none}
+.build.proc:hover .pc-pic{box-shadow:none;transform:none}
+.build.proc .pc-text{padding:0 8px}
+#process .builds{gap:28px}
+@media (min-width:760px){
+  .build.proc{padding:10px}
+  .build.proc .pc{gap:36px}
+  .build.proc .pc-text{padding:16px 28px 16px 0}
+}
+@media (prefers-reduced-motion:reduce){.build.proc{transition:none}.build.proc:hover{transform:none}}
+/* tinted board so the white frame reads, like the tinted picture panels on Product and Play */
+.build.proc .pc-pic{background:#E9F2F5}
+.fj > rect:first-of-type{fill:#E9F2F5}
+.fj pattern circle{fill:#B9CCD4}
+/* Product filters in the bento: when a filter is set, the matching tiles flow (keeping their sizes) instead of holding spots */
+@media (min-width:760px){
+  body main#builds #product.filtered .builds{grid-template-areas:none;grid-auto-flow:dense}
+  body main#builds #product.filtered .builds > .build{grid-area:auto}
+  body main#builds #product.filtered .builds > [data-tile="L"]{grid-column:span 2;grid-row:span 2}
+  body main#builds #product.filtered .builds > [data-tile="T"]{grid-row:span 2}
+  body main#builds #product.filtered .builds > [data-tile="W"],body main#builds #product.filtered .builds > [data-tile="S"]{grid-column:span 2}
+  body main#builds #product .f-empty:not([hidden]){display:block}
+}
+body main#builds .cat .builds > .build[hidden]{display:none}
+body main#builds :is(#product,#process,#play) .builds > .build[hidden]{display:none}
+/* taller rows so wide tiles' pictures aren't letterbox strips; centre the placeholder label */
+@media (min-width:760px){
+  body[data-look="bento"] main#builds #product .builds{grid-auto-rows:310px}
+  body[data-look="bento"] main#builds #product .cv-ph{padding-bottom:0}
+}
+/* a finished cover image (cover.img) fills the picture area on every layout */
+.cv-cover{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:2}
+/* board diagram (popups): dotted tinted board, palette rectangles */
+.board{border-radius:12px;overflow:hidden;border:1px solid #DCE6EB}
+.board svg{display:block;width:100%;height:auto}
+.bd-lb{font:600 11px var(--body);letter-spacing:.12em;fill:#7C8A91}
+.bd-t{font:600 14px var(--body);fill:#24343A;text-anchor:middle}
+.bd-s{font:500 11.5px var(--body);fill:#5E6E75;text-anchor:middle}
+.bd-ar{fill:none;stroke:#555;stroke-width:1.6}
+.bd-al{font:italic 500 11.5px var(--body);fill:#7C8A91}
+/* Phone: Product and Play cards in the same white card shell as Processes, so the style carries to small screens */
+@media (max-width:759px){
+  main#builds #product .build.has-cover,
+  main#builds #play .build.play-card{background:#fff;border:0;border-radius:18px;padding:10px 10px 18px;
+    box-shadow:0 1px 0 #E3E9EE,0 6px 18px rgba(16,40,50,.07);transform:none}
+  main#builds #product .build.has-cover .cv-stage,
+  main#builds #play .build.play-card .pl-pic{border-radius:12px;overflow:hidden;box-shadow:none}
+  main#builds #product .build.has-cover .cv-text,
+  main#builds #play .build.play-card .pl-text{padding:14px 8px 0}
+  main#builds #product .builds, main#builds #play .builds{gap:28px}
+}
