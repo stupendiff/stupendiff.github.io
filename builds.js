@@ -931,8 +931,8 @@ window.BUILDS = [
     problem: 'Writing apps make it easy to fiddle: select, cut, rewrite the first line ten times. A typewriter only lets you **keep going**. I wanted that feeling on the Mac, without giving up a clean file at the end.',
     did: 'A full-screen typewriter for the Mac: one Swift file, installed as a Claude Code plugin that compiles it on your machine.',
     how: [
-      'Press ⌃⌥L from anywhere and the screen becomes paper. There are no menus or buttons, so the only help is a sheet: **hold ⌘/** and every key shows on the page.',
-      '**⌘O** opens your pages, newest first, with the first line and word count. Type a few words to find the pages that hold them.',
+      'Press ⌃⌥L from anywhere and the screen becomes paper. There are no menus or buttons, so the only help is a sheet: **hold ⌘/** and every key shows on the page. A faint reminder in the corner says so, and fades once you start typing.',
+      '**⌘O** opens your pages, newest first, with the first line and word count. Type a few words to find the pages that hold them. **⌘⌫ twice** moves a page to the Trash, never a permanent delete.',
       'Return opens a page to read. A second Return puts it back on the paper to carry on writing.',
       'Then you write. The paper slides under a fixed typing point, with **sounds** recorded from a real 1940 Erika 5 typewriter: a strike per key, a duller thud for space, the carriage coming back, and a bell near the margin (⌘M mutes them). Backspace strikes through. Hold ⌥ for words and minutes, ⌘D for **dark paper**, ⌘P for a PDF.',
     ],
@@ -942,7 +942,7 @@ window.BUILDS = [
       ['Strike on screen, clean on disk', 'Backspace crosses out instead of erasing, and a struck space just closes the gap. The saved .md and ⌘C copy have none of the strikes.'],
       ['Read first, then write on', 'A past page opens read-only, so reading back never turns into editing by accident.'],
     ],
-    numbers: [['69', 'tests'], ['1', 'Swift file for the whole app']],
+    numbers: [['72', 'tests'], ['1', 'Swift file for the whole app']],
     links: [['GitHub', 'https://github.com/stupendiff/lowkeys']],
     video: { src: 'assets/video/lowkeys.mp4', poster: 'assets/video/lowkeys-poster.webp', cap: '45 seconds: strikes, dark paper, your pages and every key, with the typewriter sounds' },
     shots: [
