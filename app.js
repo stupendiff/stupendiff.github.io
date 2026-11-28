@@ -498,8 +498,12 @@
   const pm = document.getElementById('proj');
   const pmIn = pm.querySelector('.pm-in');
   const byId = Object.fromEntries(builds.map((b) => [b.id, b]));
+  // A closed dialog keeps playing its media, so pause it on every way out.
+  const stopVideos = (el) => el.querySelectorAll('video').forEach((v) => v.pause());
+  pm.addEventListener('close', () => stopVideos(pm));
   function openProject(id) {
     const b = byId[id]; if (!b) return;
+    stopVideos(pm);
     pmIn.innerHTML = modalHTML(b); pm.querySelector('.pm-card').scrollTop = 0;
     if (!pm.open) pm.showModal();
     history.replaceState(null, '', location.pathname + location.search + '#' + id);
@@ -516,6 +520,8 @@
   pm.querySelector('.pm-x').addEventListener('click', closeProject);
   pm.addEventListener('click', (e) => { if (e.target === pm) closeProject(); });
   pm.addEventListener('cancel', (e) => { e.preventDefault(); closeProject(); });
+  // A collapsed case study (full-page view) shouldn't keep playing either.
+  root.addEventListener('toggle', (e) => { if (e.target.tagName === 'DETAILS' && !e.target.open) stopVideos(e.target); }, true);
   if (target && target.matches('.has-cover,.proc,.play-card')) openProject(target.id);
 
   // Hover carousel: cycles the project's screens over the cover (desktop, motion allowed).
