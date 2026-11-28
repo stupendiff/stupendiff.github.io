@@ -934,7 +934,7 @@ window.BUILDS = [
       'Press ⌃⌥L from anywhere and the screen becomes paper. There are no menus or buttons, so the only help is a sheet: **hold ⌘/** and every key shows on the page.',
       '**⌘O** opens your pages, newest first, with the first line and word count. Type a few words to find the pages that hold them.',
       'Return opens a page to read. A second Return puts it back on the paper to carry on writing.',
-      'Then you write. The paper slides under a fixed typing point, with **sounds**: a click per key, a duller one for space, a bell near the margin, the carriage coming back (⌘M mutes them). Backspace strikes through. Hold ⌥ for words and minutes, ⌘D for **dark paper**, ⌘P for a PDF.',
+      'Then you write. The paper slides under a fixed typing point, with **sounds** recorded from a real 1940 Erika 5 typewriter: a strike per key, a duller thud for space, the carriage coming back, and a bell near the margin (⌘M mutes them). Backspace strikes through. Hold ⌥ for words and minutes, ⌘D for **dark paper**, ⌘P for a PDF.',
     ],
     decisions: [
       ['The keys are the whole interface', 'Nothing to click on the page. The ⌘/ sheet shows only while you hold it, then the paper is empty again.'],
@@ -942,8 +942,9 @@ window.BUILDS = [
       ['Strike on screen, clean on disk', 'Backspace crosses out instead of erasing, and a struck space just closes the gap. The saved .md and ⌘C copy have none of the strikes.'],
       ['Read first, then write on', 'A past page opens read-only, so reading back never turns into editing by accident.'],
     ],
-    numbers: [['47', 'tests'], ['1', 'Swift file for the whole app']],
+    numbers: [['69', 'tests'], ['1', 'Swift file for the whole app']],
     links: [['GitHub', 'https://github.com/stupendiff/lowkeys']],
+    video: { src: 'assets/video/lowkeys.mp4', poster: 'assets/video/lowkeys-poster.webp', cap: '45 seconds: strikes, dark paper, your pages and every key, with the typewriter sounds' },
     shots: [
       { src: 'assets/shots/lowkeys-keys.webp', cap: 'Hold ⌘/ for every key: the only help there is', wide: true },
       { src: 'assets/shots/lowkeys-pages.webp', cap: '⌘O: your pages, newest first; type to find one', wide: true },

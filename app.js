@@ -97,6 +97,10 @@
         <h4>${esc(s.title)}</h4>${s.note ? `<p>${rich(s.note)}</p>` : ''}</li>`).join('') + '</ol>';
   }
 
+  // A short film of the build: plays inline, sound on only if the viewer turns it up.
+  const vid = (v) => `<figure class="vid"><video controls playsinline preload="none" poster="${esc(v.poster || '')}">
+      <source src="${esc(v.src)}" type="video/mp4"></video>${v.cap ? `<figcaption>${esc(v.cap)}</figcaption>` : ''}</figure>`;
+
   const sec = (title, body, cls = '') => `<div class="sec ${cls}"><h3 class="sec-h">${title}</h3>${body}</div>`;
 
   const WHERE = { habuild: 'Habuild', personal: 'On my own', techpix: 'Techpix · Freelance', venwiz: 'Venwiz', headfone: 'Headfone', client: 'Client' };
@@ -272,6 +276,7 @@
       b.lookback ? sec('Looking back', `<p>${rich(b.lookback)}</p>`) : '',
     ].join('');
     const pics = [
+      b.video ? sec('Watch it', vid(b.video)) : '',
       (b.shots || []).length ? sec('Screens', `<div class="pm-shots">${b.shots.map((x) => `<figure class="shot${x.phone ? ' phone' : ''}">${shotBtn(x)}${x.cap ? `<figcaption>${esc(x.cap)}</figcaption>` : ''}</figure>`).join('')}</div>`) : '',
       b.evolution ? sec('How the design evolved', evolution(b.evolution)) : '',
       b.diagram ? sec(b.diagram.title || (b.cat === 'process' ? 'The flow' : 'Architecture'), diagram(b.diagram)) : '',
@@ -294,6 +299,7 @@
     const wide = [
       b.diagram ? sec(b.diagram.title || (b.cat === 'process' ? 'The flow' : 'Architecture'), diagram(b.diagram), 'wide') : '',
       b.evolution ? sec('How the design evolved', evolution(b.evolution), 'wide') : '',
+      b.video ? sec('Watch it', vid(b.video), 'wide') : '',
       b.shots && b.shots.length ? sec('Screens', gallery(b.shots), 'wide') : '',
       b.visualNote ? `<p class="note wide">${esc(b.visualNote)}</p>` : '',
     ].join('');
